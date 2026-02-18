@@ -1,0 +1,77 @@
+Spike Plan
+Project: AI-Powered Resume Builder
+Course: CSCI 4391 – Senior Project
+Purpose of the Spike
+
+The purpose of this spike is to reduce technical uncertainty surrounding the integration of a 
+Large Language Model (LLM) into our AI Resume Builder application.
+Because the AI component is the highest-risk portion of the system, this spike will validate 
+feasibility before full development begins. Specifically, we will test whether an LLM can 
+reliably transform structured user input into professional, concise, and well-formatted 
+resume bullet points.
+This spike will inform architecture decisions, prompt design strategy, and system 
+constraints for the MVP.
+
+Spike Objectives
+By the end of this spike phase, we aim to:
+Validate that AI-generated resume bullets are professional and structured.
+Minimize hallucinations or fabricated achievements.
+Determine optimal prompt design for consistent formatting.
+Verify backend-to-AI integration feasibility.
+Estimate response latency and API cost per request.
+
+Spike Scope 
+This spike will focus only on AI validation and backend feasibility.
+Out of scope for this phase:
+Frontend UI development
+Authentication
+Resume export functionality (PDF/Docx)
+Styling and visual polish
+
+Spike 1: Resume Bullet Generation Feasibility
+Objective
+Evaluate whether an LLM can convert informal or structured job descriptions into 
+professional resume bullet points.
+Key Questions
+Can the model generate strong action-oriented bullet points?
+Does the output remain concise (1–2 lines per bullet)?
+Is formatting consistent across responses?
+Does the model fabricate information not provided?
+Method
+Develop multiple structured prompt variations.
+Test 10–15 representative user inputs, including:
+Student with limited experience
+Retail job experience
+Internship experience
+Technical project description
+Compare outputs for clarity, tone, and structure.
+Deliverables
+Finalized prompt template
+Input/output comparison samples
+Documentation of observed limitations
+Success Criteria
+Bullet points begin with strong action verbs.
+No fabricated achievements.
+Consistent formatting across test cases.
+Minimal manual editing required
+
+Spike 2: Tone & Experience-Level Adaptation
+Objective
+Test whether the model can adjust tone and complexity based on user-selected 
+experience level.
+Key Questions
+Can the AI differentiate between student and entry-level tone?
+Does it maintain professionalism?
+Does tone adjustment introduce hallucinations?
+Method
+Modify prompts to include experience-level parameters.
+Generate outputs across multiple scenarios.
+Compare tone consistency and realism.
+Deliverables
+Prompt modification strategy
+Output comparison documentation
+Decision on supported tone options for MVP
+Success Criteria
+Clear tone distinction between experience levels.
+Professional formatting maintained.
+No fabricated data introduced
