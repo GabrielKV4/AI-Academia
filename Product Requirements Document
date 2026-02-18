@@ -1,0 +1,51 @@
+Section 1 – Problem + Target Users
+Many college students and early-career job seekers struggle to create effective, professional resumes due to having limited work experience,
+lack of guidance, and difficulty translating academic or extracurricular experiences into professional language. 
+These challenges are even more significant for students with learning disabilities such as ADHD or dyslexia, who may face additional barriers in organizing information.
+As a result, qualified students may be overlooked in competitive job markets, limiting their access to internships and early career opportunities.
+The goal of Academia AI it to improve equitable access to academic and career success by providing a tool to support resume creation, skill translation, and effective study habits. 
+
+Section 2 – Goal / Success Metrics
+Study Material Accuracy
+The system will correctly summarize at least 80% of identified “important information” from source materials.
+Accuracy will be measured by comparing AI-generated summaries against marked key points.
+
+Resume Quality Improvement
+Generated or improved resumes produced by the application will be scored by free resume scanning tools and must achieve a score of at least 75% or higher.
+
+Section 3 – MVP User Stories
+-	As a recent graduate, I want to upload my existing resume, so that I can improve its clarity and professionalism.
+-	As a student with ADHD, I want structured and simplified resume suggestions, so that organizing my ideas feels less overwhelming.
+-	As a college student, I want to enter my education, skills, and experience, so that I can quickly generate professional bullet points.
+-	As a job seeker, I want to upload my existing resume, so that the system can suggest stronger, ATS-friendly language.
+-	As a student, I want to upload a class PDF, so that I can receive a clear study guide summarizing the most important information.
+
+Section 4 – MVP Scope vs. Non-Goals
+The Minimum Viable Product will consist of a simple web-based application with a functional graphical user interface that allows for users to enter resume information and upload documents.
+The frontend will contain fields that allow for education, skills, and work experience to be entered while the backend will use a lightweight API framework such as 
+Flask or FastAPI to process user input and communicate with a pre-trained LLM through an external API. 
+The resume feature will allow users to enter basic information or upload an existing resume. The system will generate structured resume bullet points,
+professional summaries, and reword content to improve clarity and impact. The application will also suggest Applicant Tracking System (ATS) friendly keywords
+to help users improve compatibility with automated resume screening systems. Users will retain full control over the final content and may edit generated material before exporting it.
+For the academic support side, users will be able to upload PDF study materials from their classes. The system will extract the text and
+generate shortened bullet-point summaries that highlight key concepts. Generated summaries will then be able to be downloaded as a PDF to assist with exam preparation.
+Non-Goals
+The MVP will not include automated job application submission or AI-driven hiring decisions. Advanced analytics and integrated ATS scoring withing the application
+are all outside the scope of the initial release. The MVP will be purely web-based and will not offer a dedicated mobile application variant. 
+
+Section 5 – Acceptance Criteria
+Resume Generation Feature
+The system will allows the user to enter education, skills, and work experience information and generate structured resume bullet points in a professional tone.
+The system shall produce resume content within 15 seconds of submission under normal operating conditions. The system shall allow users to edit generated content before exporting.
+The system shall successfully export the final resume as a downloadable PDF file. The system shall handle incomplete input fields by generating output only from provided data without crashing.
+The system shall fail safely by displaying an error message if the AI API call fails rather than freezing.
+Study Guide Summarization Feature
+The system shall allow users to upload a PDF containing class study material. The system will extract text and generate a bullet-point summary highlighting key concepts.
+The system will produce the summarized study guide within 15 seconds under normal conditions. The generated summary shall include at least 75% of marked “important information” when evaluated.
+The system will export the summarized study material as a downloadable PDF.
+
+Section 6 – Assumptions + Constraints
+The system assumes the user will provide accurate and complete resume information and readable PDF study materials. Output quality depends on the clarity of the user input.
+The system relies on pre-trained generative AI API and does not train its own model. Users are responsible for reviewing and approving all generated content before use.
+The system will only process user-provided text and uploaded PDFs and will not access external databases or store personal data long-term. The application must operate within API rate limits,
+token limits, and cost constraints of third-party AI services. AI functions strictly as an assistive tool and will not automate hiring decisions or fabricate user qualifications.
