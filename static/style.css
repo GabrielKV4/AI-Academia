@@ -1,0 +1,113 @@
+
+.area {
+    width: 100%;
+    height: 220px;
+    border: 3px dashed var(--bs-primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s ease;
+}
+
+.area:hover,
+.area.dragging,
+.area.uploading {
+    opacity: 1;
+}
+
+.area input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-content {
+    text-align: center;
+    pointer-events: none;
+}
+
+.area input:focus {
+    outline: none;
+}
+
+/* Main Output Container */
+.output-container {
+    border-radius: 12px;
+    padding: 2rem;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Adjust shadow in dark mode */
+[data-bs-theme="dark"] .output-container {
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.05);
+}
+
+/* Headings */
+.output-container h2 {
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.output-container h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Lists */
+.output-container ul {
+    margin-bottom: 2rem;
+}
+
+/* Code blocks (Formulas or emphasized content) */
+.output-container pre {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-body-color);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+/* Highlighted Sections (Blockquotes) */
+.output-container blockquote {
+    background-color: var(--bs-secondary-bg);
+    
+    /*border-left: 5px solid var(--bs-primary); */
+    border-left: none;
+
+    /* padding: 1.25rem; */
+    padding: 1rem 1.5rem;
+
+    /* margin: 2rem 0; */
+    margin: 2.5rem 0;
+
+    /* border-radius: 10px; */
+    border-radius: 8px;
+
+    font-size: 1.1rem;
+
+}
+
+/* Remove default italic styling */
+.output-container blockquote p {
+    margin-bottom: 0.5rem;
+}
+
+/* Make highlighted titles centered & bold */
+.output-container blockquote strong {
+    display: block;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
