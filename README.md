@@ -1,100 +1,233 @@
-# AI-Academia  
-## ADHD-Compliant Study Material Generator
-
-AI-Academia is an engineered content generation system that produces ADHD-friendly study summaries and automatically validates them against measurable compliance standards.
+# ClearPath AI  
+### ADHD-Constrained Study Summary Generator
 
 ---
 
-## Project Objective (Milestone 1)
+## Overview
 
-Transform standard LLM summaries into structured, ADHD-compliant study material using:
+ClearPath AI is a structured AI summarization system designed to generate cognitively optimized study summaries for learners with ADHD.
 
-- Real LLM backend integration
-- Measurable ADHD compliance rules (8–12)
-- Automated compliance validation
-- Quantitative baseline comparison
+Unlike traditional AI summaries, this system enforces **research-backed, measurable formatting constraints** using a deterministic compliance engine.
 
-This is not a prompt-only solution.  
-This system enforces structured, testable constraints.
+The project combines:
 
----
-
-## How It Works
-
-Input → LLM Generation → Compliance Checker → Score → Output
-
-- The LLM generates a structured summary.
-- The compliance checker validates measurable ADHD rules.
-- A compliance score (≥ 80%) determines acceptability.
-- Baseline comparison demonstrates measurable improvement.
+- Generative AI (LLM-based summarization)
+- Deterministic structural validation
+- Quantitative compliance scoring
+- Research-grounded cognitive design
 
 ---
 
-## Repository Structure
+## Problem
 
-/docs/
-PRD.md
-ADHD_compliance_spec.md
-spike_results.md
-evaluation_test_cases.md
-architecture.png
+Students with ADHD often struggle with:
 
-/src/
-llm_integration.py
-compliance_checker.py
-generator.py
+- Long, dense paragraphs
+- Complex sentence structures
+- Poor visual segmentation
+- Lack of retrieval-based review questions
+- High reading complexity
 
-requirements.txt
-.env.example
+Standard AI summaries do not optimize for cognitive accessibility.
+
+ClearPath AI introduces a validation layer that ensures summaries follow measurable ADHD-friendly constraints.
+
+---
+
+## Solution
+
+The system generates two summaries:
+
+1. **Baseline Summary** (standard AI output)
+2. **ADHD-Constrained Summary** (validated against 10 rules)
+
+The ADHD version is regenerated automatically if it fails compliance thresholds.
+
+---
+
+## Core Architecture
+
+
+User Input
+↓
+Baseline Summary (LLM)
+↓
+ADHD-Constrained Summary (LLM)
+↓
+Compliance Engine (10 Deterministic Rules)
+↓
+Evaluation & Comparison Metrics
 
 
 ---
 
-##  Setup Instructions
+## ADHD Compliance Rules (10 Total)
 
-1. Clone the repository
-2. Install dependencies:
+The Compliance Engine validates:
+
+1. Maximum 20 words per sentence  
+2. Maximum 80 words per paragraph  
+3. Required section headers:
+   - `## Learning Objectives`
+   - `## Key Concepts`
+   - `## Recall Questions`
+4. Bullet formatting in Key Concepts  
+5. Minimum 2 recall questions  
+6. Reading level ≤ Grade 8 (Flesch–Kincaid)  
+7. Formulas must appear on their own line  
+8. Blank line between sections  
+9. Minimum 3 Key Concept bullets  
+10. Maximum 6 Key Concept bullets  
+
+---
+
+## Compliance Scoring
+
+Each rule contributes equally.
+
+
+Compliance Score = (Passed Rules ÷ 10) × 100
+
+
+A summary is considered **ADHD-Compliant** if:
+
+
+Score ≥ 80%
+
+
+---
+
+## Evaluation Metrics
+
+The system automatically computes:
+
+- Flesch–Kincaid Reading Level
+- Average Sentence Length
+- Average Paragraph Length
+- Compliance Score
+
+It compares baseline vs ADHD-constrained outputs quantitatively.
+
+---
+
+## Project Structure
+
+
+ClearpathAI/
+│
+├── src/
+│   ├── generator.py
+│   ├── compliance_checker.py
+│   ├── evaluator.py
+│   └── llm_integration.py
+│
+├── docs/
+│   ├── ADHD_compliance_spec.md
+│   ├── architecture.PNG
+│   ├── evaluation_test_cases.md
+│   ├── PRD.md
+│   ├── research_justification.md
+│   └── spike_results.md
+│
+├── tests/
+│   └── test_compliance.py
+│ 
+├── README.md
+├── .env.example
+├── test_api.py
+├── references.md
+├── requirements.txt
+└── .gitignore
+
+
+
+---
+
+## How to Run
+
+### 1. Activate Virtual Environment
+
+Windows:
+
+.venv\Scripts\activate
+
+
+Mac/Linux:
+
+source .venv/bin/activate
+
+
+### 2. Install Dependencies
 
 
 pip install -r requirements.txt
 
 
-3. Create a `.env` file using `.env.example`
-4. Add your API key
-5. Run:
+### 3. Run Evaluation Script
 
 
-python src/generator.py
+python src/evaluator.py
+
+
+The script will:
+
+- Generate both summaries
+- Evaluate compliance
+- Print quantitative comparison results
+
+---
+
+## Example Output Metrics
+
+
+Baseline:
+reading_level: 12.4
+avg_sentence_length: 24.8
+avg_paragraph_length: 132.5
+compliance_score: 30
+
+ADHD Version:
+reading_level: 6.9
+avg_sentence_length: 14.2
+avg_paragraph_length: 54.1
+compliance_score: 90
 
 
 ---
 
-## Compliance Standard
+## Research Foundation
 
-The system enforces measurable ADHD rules including:
+All structural rules are derived from peer-reviewed research in:
 
-- Sentence length limits
-- Paragraph length limits
-- Reading level constraint
-- Required section structure
-- Bullet formatting
-- Active recall questions
-- Structural spacing
+- Cognitive Load Theory
+- Working Memory Limitations
+- Readability Science
+- Retrieval Practice
 
-A minimum 80% rule pass rate is required for ADHD compliance.
+See `References.md` for full citations.
 
 ---
 
-## Evaluation
+## Project Classification
 
-The system compares:
+This project demonstrates:
 
-- Baseline GPT summary
-- ADHD-constrained summary
+- Constrained Generative AI
+- Deterministic Validation Architecture
+- Human-Centered NLP Design
+- Quantitative Evaluation Framework
 
-Metrics include:
+This is not prompt engineering alone.  
+It is a structured generation + validation system.
 
-- Reading level difference
-- Sentence length difference
-- Paragraph length difference
-- Rule compliance percentage
+---
+
+## Future Work
+
+- Adaptive personalization based on learner profile
+- Real-time compliance feedback
+- GUI interface
+- Semantic simplification scoring
+- Controlled user testing study
+
+---

@@ -117,7 +117,6 @@ class ComplianceChecker:
 
         for line in lines:
             if formula_pattern.search(line):
-                # If formula appears but line has other text besides formula
                 stripped = line.strip()
                 if not re.fullmatch(r'[a-zA-Z0-9\s=\+\-\*/\^\(\)\.]+', stripped) or len(stripped.split()) > 5:
                     violations += 1
@@ -134,7 +133,7 @@ class ComplianceChecker:
         headers = re.findall(r'## .*', self.text)
         violations = 0
 
-        for header in headers[1:]:  # Skip first header
+        for header in headers[1:]:
             index = self.text.find(header)
             if index > 0 and not self.text[index - 2:index] == '\n\n':
                 violations += 1
@@ -146,7 +145,58 @@ class ComplianceChecker:
             {"spacing_violations": violations}
         )
 
-    # Overall score
+    # Rule 9: Minimum 3 Key Concept bullets
+    def check_min_key_bullets(self, min_bullets=3):
+        key_section_match = re.search(
+            r'## Key Concepts(.*?)(##|\Z)',
+            self.text,
+            re.DOTALL
+        )
+
+        if not key_section_match:
+            self._record_result(
+                "min_key_bullets",
+                False,
+                {"reason": "Key Concepts section missing"}
+            )
+            return
+
+        section_text = key_section_match.group(1)
+        bullets = re.findall(r'^\s*[-*]\s+', section_text, re.MULTILINE)
+
+        passed = len(bullets) >= min_bullets
+        self._record_result(
+            "min_key_bullets",
+            passed,
+            {"bullet_count": len(bullets)}
+        )
+
+    # Rule 10: Maximum 6 Key Concept bullets
+    def check_max_key_bullets(self, max_bullets=6):
+        key_section_match = re.search(
+            r'## Key Concepts(.*?)(##|\Z)',
+            self.text,
+            re.DOTALL
+        )
+
+        if not key_section_match:
+            self._record_result(
+                "max_key_bullets",
+                False,
+                {"reason": "Key Concepts section missing"}
+            )
+            return
+
+        section_text = key_section_match.group(1)
+        bullets = re.findall(r'^\s*[-*]\s+', section_text, re.MULTILINE)
+
+        passed = len(bullets) <= max_bullets
+        self._record_result(
+            "max_key_bullets",
+            passed,
+            {"bullet_count": len(bullets)}
+        )
+
     def compute_score(self):
         score = (self.passed_rules / self.total_rules) * 100
         self.results["overall_score"] = round(score, 2)
@@ -165,6 +215,8 @@ class ComplianceChecker:
         self.check_reading_level()
         self.check_formula_separation()
         self.check_section_spacing()
-        self.compute_score()
+        self.check_min_key_bullets()
+        self.check_max_key_bullets()
 
+        self.compute_score()
         return self.results
