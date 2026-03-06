@@ -317,90 +317,61 @@ It's crucial to understand that the formula does not indicate the physical arran
 ### Source
 
 OpenStax Algebra & Trigonometry
-Section: Even–Odd Trigonometric Identities
+Section: Polynomials
 
 ### Evaluation Results --- 
 
 Metric	                  Baseline	 ADHD Version	Improvement
-Reading Level (FK Grade)	9.2	         9.78	    ↑ 0.58 
-Avg Sentence Length	        9.08	     17.5	    ↑ 8.42 
-Avg Paragraph Length	    39.33	     8.75	    ↓ 30.58
-Compliance Score	         30%	      80%	    ↑ 50%
+Reading Level (FK Grade)	9.89	    10.21	    ↓ -0.33 
+Avg Sentence Length	        9.4	         8.75	    ↓ 0.65 
+Avg Paragraph Length	    45.0	     17.5	    ↓ 27.5
+Compliance Score	         30%	      90%	    ↑ 60%
 
 ### Original Input:
-For all 𝜃 in the domain of the sine and cosine functions, respectively, we can state the following: 
+Identifying the Degree and Leading Coefficient of Polynomials
+The formula just found is an example of a polynomial, which is a sum of or difference of terms, each consisting of a variable raised to a nonnegative integer power. A number multiplied by a variable raised to an exponent, such as 384⁢𝜋,
+ is known as a coefficient. Coefficients can be positive, negative, or zero, and can be whole numbers, decimals, or fractions. Each product 𝑎𝑖⁢𝑥𝑖,
+ such as 384⁢𝜋⁢𝑤,
+ is a term of a polynomial. If a term does not contain a variable, it is called a constant.
 
-Since sin⁡(−𝜃)=−sin⁡𝜃, sine is an odd function. 
+A polynomial containing only one term, such as 5⁢𝑥4,
+ is called a monomial. A polynomial containing two terms, such as 2⁢𝑥−9,
+ is called a binomial. A polynomial containing three terms, such as −3⁢𝑥2+8⁢𝑥−7,
+ is called a trinomial.
 
-Since, cos⁡(−𝜃)=cos⁡𝜃, cosine is an even function. 
-
-The other even-odd identities follow from the even and odd nature of the sine and cosine functions. For example, consider the tangent identity, tan⁡(−𝜃)=−tan𝜃. We can interpret the tangent of a negative angle as tan⁡(−𝜃)=sin⁡(−𝜃)cos⁡(−𝜃)=−sin⁡𝜃cos⁡𝜃=−tan⁡𝜃. Tangent is therefore an odd function, which means that tan⁡(−𝜃)=−tan⁡(𝜃) for all 𝜃 in the domain of the tangent function. 
-
-The cotangent identity, cot⁡(−𝜃)=−cot⁡𝜃, also follows from the sine and cosine identities. We can interpret the cotangent of a negative angle as cot⁡(−𝜃)=cos⁡(−𝜃)sin⁡(−𝜃)=cos⁡𝜃−sin⁡𝜃=−cot⁡𝜃. Cotangent is therefore an odd function, which means that cot⁡(−𝜃)=−cot⁡(𝜃) for all 𝜃 in the domain of the cotangent function. 
-
-The cosecant function is the reciprocal of the sine function, which means that the cosecant of a negative angle will be interpreted as csc⁡(−𝜃)=1sin⁡(−𝜃)=1−sin⁡𝜃=−csc⁡𝜃. The cosecant function is therefore odd. 
-
-Finally, the secant function is the reciprocal of the cosine function, and the secant of a negative angle is interpreted as sec⁡(−𝜃)=1cos⁡(−𝜃)=1cos⁡𝜃=sec⁡𝜃. The secant function is therefore even. 
-
-To sum up, only two of the trigonometric functions, cosine and secant, are even. The other four functions are odd, verifying the even-odd identities. 
+We can find the degree of a polynomial by identifying the highest power of the variable that occurs in the polynomial. The term with the highest degree is called the leading term because it is usually written first. The coefficient of the leading term is called the leading coefficient. When a polynomial is written so that the powers are descending, we say that it is in standard form.
 
 ### Baseline Summary --- 
 
-This study material discusses the even-odd properties of trigonometric functions based on their behavior with negative angles: 
+The study material discusses polynomials, which are expressions formed by the sum or difference of terms with variables raised to nonnegative integer powers. Each term includes a coefficient, which can be positive, negative, or zero, and may be a whole number, decimal, or fraction. Terms without variables are constants.
 
-Sine Function: ( \sin(-\theta) = -\sin(\theta) ) - Sine is an odd function. 
+Polynomials are classified based on the number of terms: 
+- A monomial has one term (e.g., 5𝑥⁴).
+- A binomial has two terms (e.g., 2𝑥−9).
+- A trinomial has three terms (e.g., −3𝑥²+8𝑥−7).
 
-Cosine Function: ( \cos(-\theta) = \cos(\theta) ) - Cosine is an even function. 
-
-Tangent Function: ( \tan(-\theta) = -\tan(\theta) ) - Tangent is an odd function. 
-
-Cotangent Function: ( \cot(-\theta) = -\cot(\theta) ) - Cotangent is an odd function. 
-
-Cosecant Function: ( \csc(-\theta) = -\csc(\theta) ) - Cosecant is an odd function. 
-
-Secant Function: ( \sec(-\theta) = \sec(\theta) ) - Secant is an even function. 
-
-In summary, cosine and secant are even functions, while sine, tangent, cotangent, and cosecant are odd functions. 
+The degree of a polynomial is determined by the highest power of the variable present, and the leading term is the term with the highest degree. The leading coefficient is the coefficient of this leading term. Polynomials are often expressed in standard form, where terms are arranged in descending order of their powers.
 
 ### ADHD Summary --- 
 
-Learning Objectives 
+## Learning Objectives
 
-Understand the even and odd properties of trigonometric functions. 
+- Understand what a polynomial is.
+- Identify the degree and leading coefficient of a polynomial.
+- Differentiate between monomials, binomials, and trinomials.
 
-Identify the relationships between sine, cosine, tangent, cotangent, cosecant, and secant. 
+## Key Concepts
 
-### Key Concepts 
+- A polynomial is a sum or difference of terms.
+- Each term has a variable raised to a nonnegative integer power.
+- The highest power of the variable is the degree of the polynomial.
+- The leading term is the term with the highest degree.
+- The leading coefficient is the coefficient of the leading term.
 
-Sine is an odd function: 
+## Recall Questions
 
-sin(−𝜃) = −sin(𝜃) 
-
-Cosine is an even function: 
-
-cos(−𝜃) = cos(𝜃) 
-
-Tangent is an odd function: 
-
-tan(−𝜃) = −tan(𝜃) 
-
-Cotangent is an odd function: 
-
-cot(−𝜃) = −cot(𝜃) 
-
-Cosecant is an odd function: 
-
-csc(−𝜃) = −csc(𝜃) 
-
-Secant is an even function: 
-
-sec(−𝜃) = sec(𝜃) 
-
-### Recall Questions 
-
-What type of function is cosine?  
-
-How is the tangent function classified in terms of even or odd?
+1. What is the degree of a polynomial?
+2. How do you identify a leading coefficient?
 
 
 ---
