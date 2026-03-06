@@ -2,6 +2,22 @@
 ### ADHD-Constrained Study Summary Generator
 
 ---
+## Table of Contents
+Overview
+Problem
+Solution
+System Architecture
+ADHD Compliance Rules
+Compliance Scoring
+Evaluation Metrics
+Project Structure
+How to Run
+Example Output Metrics
+Research Foundation
+Project Classification
+Future Work
+Demo Video
+---
 
 ## Overview
 
@@ -45,20 +61,11 @@ The ADHD version is regenerated automatically if it fails compliance thresholds.
 
 ---
 
-## Core Architecture
+## System Architecture
 
+![ClearPath AI Architecture](docs/architecture.png)
 
-User Input
-↓
-Baseline Summary (LLM)
-↓
-ADHD-Constrained Summary (LLM)
-↓
-Compliance Engine (10 Deterministic Rules)
-↓
-Evaluation & Comparison Metrics
-
-
+---
 ---
 
 ## ADHD Compliance Rules (10 Total)
@@ -115,11 +122,9 @@ It compares baseline vs ADHD-constrained outputs quantitatively.
 
 ClearpathAI/
 │
-├── src/
-│   ├── generator.py
-│   ├── compliance_checker.py
-│   ├── evaluator.py
-│   └── llm_integration.py
+│
+├── demo/
+│   └── ClearPath AI Demo.mp4
 │
 ├── docs/
 │   ├── ADHD_compliance_spec.md
@@ -128,6 +133,12 @@ ClearpathAI/
 │   ├── PRD.md
 │   ├── research_justification.md
 │   └── spike_results.md
+│
+├── src/
+│   ├── generator.py
+│   ├── compliance_checker.py
+│   ├── evaluator.py
+│   └── llm_integration.py
 │
 ├── tests/
 │   └── test_compliance.py
@@ -229,5 +240,13 @@ It is a structured generation + validation system.
 - GUI interface
 - Semantic simplification scoring
 - Controlled user testing study
+
+---
+
+## Demo Video
+
+Milestone 1 demonstration:
+
+demo/ClearPath AI Demo.mp4
 
 ---
