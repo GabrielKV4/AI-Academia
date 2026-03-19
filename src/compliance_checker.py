@@ -220,3 +220,41 @@ class ComplianceChecker:
 
         self.compute_score()
         return self.results
+
+def max_sentence_length(text):
+    sentences = re.split(r'[.!?]', text)
+    max_len = 0
+
+    for s in sentences:
+        words = s.strip().split()
+        if len(words) > max_len:
+            max_len = len(words)
+
+    return max_len
+
+
+def max_paragraph_length(text):
+    paragraphs = text.split("\n")
+    max_len = 0
+
+    for p in paragraphs:
+        words = p.strip().split()
+        if len(words) > max_len:
+            max_len = len(words)
+
+    return max_len
+
+
+def check_compliance(summary):
+
+    results = {}
+
+    text = summary
+
+    results["Max sentence length ≤ 20"] = max_sentence_length(text) <= 20
+    results["Max paragraph length ≤ 80"] = max_paragraph_length(text) <= 80
+    results["Has Learning Objectives"] = "Learning Objectives" in text
+    results["Has Key Concepts"] = "Key Concepts" in text
+    results["Has Recall Questions"] = "Recall Questions" in text
+
+    return results

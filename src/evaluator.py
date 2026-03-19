@@ -120,3 +120,38 @@ There are several techniques and approaches for scraping data from websites. See
 
     print("\n--- ADHD Summary ---\n")
     print(adhd)
+
+
+def avg_sentence_length(text):
+    sentences = re.split(r'[.!?]', text)
+    sentences = [s.strip() for s in sentences if s.strip()]
+
+    if not sentences:
+        return 0
+
+    word_counts = [len(s.split()) for s in sentences]
+
+    return sum(word_counts) / len(word_counts)
+
+
+def avg_paragraph_length(text):
+    paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
+
+    if not paragraphs:
+        return 0
+
+    word_counts = [len(p.split()) for p in paragraphs]
+
+    return sum(word_counts) / len(word_counts)
+
+
+def evaluate_text(baseline, adhd):
+
+    results = {
+        "Baseline Avg Sentence Length": round(avg_sentence_length(baseline), 2),
+        "ADHD Avg Sentence Length": round(avg_sentence_length(adhd), 2),
+        "Baseline Avg Paragraph Length": round(avg_paragraph_length(baseline), 2),
+        "ADHD Avg Paragraph Length": round(avg_paragraph_length(adhd), 2),
+    }
+
+    return results
