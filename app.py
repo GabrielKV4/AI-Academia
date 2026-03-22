@@ -67,9 +67,14 @@ def get_fix_suggestion(rule):
 # -----------------------------
 
 if st.button("Generate Summaries"):
-
+    # Error handling for empty inputs or inputs without enough detail
     if not user_input.strip():
         st.warning("Please enter some text.")
+    elif len(user_input.split()) < 15:
+        st.warning("Input is too short. Please provide more detailed academic text.")
+    elif len(user_input) > 12000:
+        st.warning("Input is too long. Please shorten the text amd try again.")
+        st.stop()
 
     else:
 
@@ -79,6 +84,10 @@ if st.button("Generate Summaries"):
             try:
 
                 results, baseline, adhd = evaluate_input(user_input)
+
+                if baseline.startswith("ERROR") or adhd.startswith("ERROR"):
+                    st.error("Failed to generate summaries due to an API issue. Please try again.")
+                    st.stop()
 
                 st.divider()
 
@@ -153,7 +162,8 @@ if st.button("Generate Summaries"):
                 # -----------------------------
 
                 st.subheader("Evaluation Comparison")
-
+                def safe_number(value):
+                    return value if isinstance(value, (int, float)) else 0
                 readability_data = {
                     "Metric": [
                         "Reading Level",
@@ -161,14 +171,14 @@ if st.button("Generate Summaries"):
                         "Avg Paragraph Length"
                     ],
                     "Baseline": [
-                        results["baseline"]["reading_level"],
-                        results["baseline"]["avg_sentence_length"],
-                        results["baseline"]["avg_paragraph_length"]
+                        safe_number(results["baseline"]["reading_level"]),
+                        safe_number(results["baseline"]["avg_sentence_length"]),
+                        safe_number(results["baseline"]["avg_paragraph_length"])
                     ],
                     "ADHD Version": [
-                        results["adhd"]["reading_level"],
-                        results["adhd"]["avg_sentence_length"],
-                        results["adhd"]["avg_paragraph_length"]
+                        safe_number(results["adhd"]["reading_level"]),
+                        safe_number(results["adhd"]["avg_sentence_length"]),
+                        safe_number(results["adhd"]["avg_paragraph_length"])
                     ]
                 }
 
@@ -196,8 +206,8 @@ if st.button("Generate Summaries"):
                 score_df = pd.DataFrame({
                     "Version": ["Baseline", "ADHD"],
                     "Compliance Score": [
-                        results["baseline"]["compliance_score"],
-                        results["adhd"]["compliance_score"]
+                        safe_number(results["baseline"]["compliance_score"]),
+                        safe_number(results["adhd"]["compliance_score"])
                     ]
                 })
 
@@ -209,5 +219,7 @@ if st.button("Generate Summaries"):
                     "Comparison of readability and structural accessibility between standard AI summaries and ADHD-constrained summaries."
                 )
 
-            except Exception as e:
-                st.error(f"Error generating summaries: {e}")
+            except RuntimeError as e:
+                st.error(f"API Error: {e}")
+            except Exception:
+                st.error("Unexpected Error has occured. Please try again.")

@@ -36,9 +36,13 @@ def evaluate_input(input_text):
 
     print("Generating baseline summary...")
     baseline = generate_baseline_summary(input_text)
+    if baseline.startswith("ERROR:"):
+        raise RuntimeError(baseline)
 
     print("Generating ADHD-constrained summary...")
     adhd = generate_adhd_summary(input_text)
+    if adhd.startwith("ERROR:"):
+        raise RuntimeError(adhd)
 
     # Run compliance checks
     baseline_checker = ComplianceChecker(baseline)

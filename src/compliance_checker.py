@@ -99,14 +99,19 @@ class ComplianceChecker:
 
     # Rule 6: Reading level ≤ Grade 8
     def check_reading_level(self, max_grade=8.0):
-        grade = textstat.flesch_kincaid_grade(self.text)
-        passed = grade <= max_grade
+        try:
+            grade = textstat.flesch_kincaid_grade(self.text)
+            passed = grade <= max_grade
 
-        self._record_result(
-            "reading_level",
-            passed,
-            {"grade_level": grade}
-        )
+            self._record_result(
+                "reading_level",
+                passed,
+                {"grade_level": grade}
+            )
+        except Exception as e:
+            self._record_result("reading_level",
+                                False,
+                                {"error": str(e)})
 
     # Rule 7: Formula Separation Rule
     def check_formula_separation(self):
@@ -198,6 +203,10 @@ class ComplianceChecker:
         )
 
     def compute_score(self):
+        if score.total_rules == 0:
+            self.results['overall_score'] = 0
+            self.results['adhd_compliant'] = False
+            return
         score = (self.passed_rules / self.total_rules) * 100
         self.results["overall_score"] = round(score, 2)
         self.results["adhd_compliant"] = score >= 80
