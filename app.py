@@ -14,32 +14,250 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("ClearPath AI")
-st.caption("AI-powered summarization designed for ADHD-friendly learning.")
-st.subheader("ADHD-Constrained Study Summary Generator")
+# -----------------------------
+# Background Styling
+# -----------------------------
 
-st.write(
-"""
-Paste academic text below. The system generates:
+st.markdown("""
+<style>
 
-• A **baseline AI summary**
+[data-testid="stAppViewContainer"] {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(79, 140, 255, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(120, 100, 255, 0.2), transparent 40%),
+        linear-gradient(135deg, #0e1117 0%, #1a1d24 100%);
+}
 
-• An **ADHD-optimized summary**
+* {
+    transition: all 0.2s ease-in-out;
+}
 
-• A **compliance score based on 10 accessibility rules**
-"""
+.block-container {
+    background-color: rgba(20, 24, 35, 0.6);
+    padding: 2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------
+# Tab and Button Styling
+# -----------------------------
+
+st.markdown("""
+<style>
+.stTabs [role="tablist"] {
+    justify-content: space-between;
+}
+
+.stTabs [role="tab"] {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 18px;
+    padding: 12px 0;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #404247;
+    border-radius: 8px;
+    color: #1f77b4 !important;
+}
+
+.stTabs [data-baseweb="tab-highlight"] {
+    background-color: #1f77b4 !important;  /* your color */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stButton > button {
+    animation: fadeIn 0.6s ease-in-out;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------
+# Main Heading
+# -----------------------------
+
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500&display=swap');
+    </style>
+    
+    <div style='text-align: center; margin-bottom: 30px;'>
+        <h1 style='
+            font-family: "Playfair Display", serif;
+            color: #0859fc; 
+            '>ClearPath AI</h1>
+        <h5 style='
+            color: #89affa;
+            '>AI-powered summarization designed for ADHD-friendly learning</h3>
+        <h7 style='
+            color: #afc8fa;
+            '>ADHD-Constrained Study Summary Generator</h4>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+# -----------------------------
+# Info Box
+# -----------------------------
+
+st.markdown(
+    """
+    <div style="
+        border: 1px solid #0e1015;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #212429;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+    ">
+        <p style='text-align: left; color: #ffffff; font-size: 24px;'>
+            The system generates:
+        </p>
+        <ul style='color: #ffffff; font-size: 16px;'>
+            <li><strong>🧠 Simple summary</strong></li>
+            <li><strong>⚡ ADHD-friendly version</strong></li>
+            <li><strong>✅ Clarity score</strong></li>
+        </ul>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    """,
+    unsafe_allow_html=True
 )
 
 # -----------------------------
-# Text Input
+# Text Field Styling
+# -----------------------------
+
+st.markdown("""
+<style>
+
+textarea {
+    font-size: 18px !important;
+    line-height: 1.6 !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+}
+
+[data-testid="stTextArea"] label {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px !important;
+}
+
+[data-testid="stTextArea"] textarea {
+    border: 1px solid #0e1015;
+    border-radius: 10px;
+    background-color: #212429;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------
+# Text Above Text Field
+# -----------------------------
+
+st.markdown("""
+<div style='text-align: center; margin-bottom: 20px;'>
+    <label for='input-text' style='font-size: 24px; font-weight: 600; color: #ffffff;'>✨ Paste Your Study Material Below ✨</label>
+</div>
+            """, unsafe_allow_html=True)
+
+# -----------------------------
+# Text Field Creation
 # -----------------------------
 
 user_input = st.text_area(
-    "Input Text",
+    "Input",
     height=200,
-    placeholder="Paste textbook content, lecture notes, or academic paragraphs here..."
+    placeholder="Paste textbook content, lecture notes, or academic paragraphs here...",
+    label_visibility="collapsed"
 )
 
+# -----------------------------
+# Demo Mode and Generate Button Setup
+# -----------------------------
+
+col1, col2 = st.columns([3, 1])  # adjust ratio if needed
+
+with col1:
+    demo_mode = st.checkbox("Use Demo Mode (no API calls)", value=True)
+
+# -----------------------------
+# Generate Button CSS
+# -----------------------------
+
+st.markdown("""
+<style>
+
+.stButton > button {
+    background: linear-gradient(135deg, #4f8cff, #7a5cff);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(79, 140, 255, 0.4);
+    transition: all 0.2s ease-in-out;
+}
+
+.stButton > button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(79, 140, 255, 0.6);
+}
+
+.stButton > button:active {
+    transform: scale(0.97);
+}
+
+.stButton > button:disabled {
+    background: #555 !important;
+    color: #aaa !important;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+with col2:
+    generate_clicked = False
+    if user_input.strip() and 15 < len(user_input.split()) < 12000:
+        generate_clicked = st.button("Generate Summaries", use_container_width=True)
+        
 # -----------------------------
 # Fix Suggestions for Rules
 # -----------------------------
@@ -61,61 +279,116 @@ def get_fix_suggestion(rule):
 
     return suggestions.get(rule, "Review formatting for this rule.")
 
-
 # -----------------------------
-# Generate Button
+# Generate Button Handler
 # -----------------------------
 
-if st.button("Generate Summaries"):
-    # Error handling for empty inputs or inputs without enough detail
-    if not user_input.strip():
-        st.warning("Please enter some text.")
-    elif len(user_input.split()) < 15:
-        st.warning("Input is too short. Please provide more detailed academic text.")
-    elif len(user_input) > 12000:
-        st.warning("Input is too long. Please shorten the text amd try again.")
-        st.stop()
+if generate_clicked:
+    
+    with st.spinner("Generating summaries and evaluating compliance..."):
 
-    else:
+        try:
 
-        # Small UI upgrade (makes app feel polished)
-        with st.spinner("Generating summaries and evaluating compliance..."):
+            # Demo mode with fake outputs to test UI
+            if demo_mode:
+                # Fake outputs (no API call)
+                baseline = "This is a baseline summary of the provided academic text. It is longer and more complex."
 
-            try:
+                adhd = """Learning Objectives:
+            - Understand the main idea
+            - Identify key terms
 
+            Key Concepts:
+            - Concept 1 explained simply
+            - Concept 2 broken down
+            - Concept 3 summarized
+
+            Recall Questions:
+            - What is the main idea?
+            - Why is this concept important?
+            """
+
+                results = {
+                    "baseline": {
+                        "reading_level": 12,
+                        "avg_sentence_length": 22,
+                        "avg_paragraph_length": 120,
+                        "compliance_score": 40
+                    },
+                    "adhd": {
+                        "reading_level": 7,
+                        "avg_sentence_length": 12,
+                        "avg_paragraph_length": 60,
+                        "compliance_score": 85
+                    }
+                }
+            else:   # Real mode with API calls
                 results, baseline, adhd = evaluate_input(user_input)
 
-                if baseline.startswith("ERROR") or adhd.startswith("ERROR"):
-                    st.error("Failed to generate summaries due to an API issue. Please try again.")
-                    st.stop()
+            if baseline.startswith("ERROR") or adhd.startswith("ERROR"):
+                st.error("Failed to generate summaries due to an API issue. Please try again.")
+                st.stop()
 
-                st.divider()
+            tab1, tab2, tab3 = st.tabs(["Summaries", "Compliance", "Charts"])
 
-                # -----------------------------
-                # Summary Comparison
-                # -----------------------------
+            # -----------------------------
+            # Summary Comparison
+            # -----------------------------
 
-                col1, col2 = st.columns(2)
+            with tab1:
+                
+                
+                # Parse ADHD sections
+                sections = {
+                    "Learning Objectives": "",
+                    "Key Concepts": "",
+                    "Recall Questions": ""
+                }
 
-                with col1:
-                    st.subheader("Baseline Summary")
+                current_section = None
+
+                for line in adhd.split("\n"):
+                    line = line.strip()
+
+                    if "Learning Objectives" in line:
+                        current_section = "Learning Objectives"
+                        continue
+                    elif "Key Concepts" in line:
+                        current_section = "Key Concepts"
+                        continue
+                    elif "Recall Questions" in line:
+                        current_section = "Recall Questions"
+                        continue
+
+                    if current_section and line:
+                        sections[current_section] += line + "\n"
+
+                # Expandable sections for ADHD summary
+                with st.expander("🎯 Learning Objectives"):
+                    st.write(sections["Learning Objectives"] or "No content found.")
+
+                with st.expander("🧩 Key Concepts"):
+                    st.write(sections["Key Concepts"] or "No content found.")
+
+                with st.expander("❓ Recall Questions"):
+                    st.write(sections["Recall Questions"] or "No content found.")
+
+                st.markdown("---")
+
+                # Baseline summary expandble field
+                with st.expander("📘 Baseline Summary"):
                     st.info(baseline)
 
-                with col2:
-                    st.subheader("ADHD Optimized Summary")
-                    st.success(adhd)
+            # -----------------------------
+            # Compliance Evaluation
+            # -----------------------------
 
-                st.divider()
+            checker = ComplianceChecker(adhd)
+            compliance = checker.run_all_checks()
 
-                # -----------------------------
-                # Compliance Evaluation
-                # -----------------------------
+            score = compliance["overall_score"]
 
-                checker = ComplianceChecker(adhd)
-                compliance = checker.run_all_checks()
-
-                score = compliance["overall_score"]
-
+            with tab2:
                 st.subheader("ADHD Compliance Results")
 
                 st.metric(
@@ -125,45 +398,35 @@ if st.button("Generate Summaries"):
 
                 st.progress(score / 100)
 
-                # Clear status message for demo
                 if score >= 80:
                     st.success("This summary meets ADHD accessibility standards.")
                 else:
                     st.warning("This summary needs improvements to meet ADHD accessibility standards.")
 
-                st.divider()
-
-                # -----------------------------
-                # Rule Breakdown
-                # -----------------------------
-
                 st.subheader("Rule Breakdown")
 
                 for rule, data in compliance.items():
-
                     if isinstance(data, dict):
-
                         pretty = rule.replace("_", " ").title()
                         status = data["status"]
 
                         if status == "pass":
                             st.success(f"{pretty} — PASS")
-
                         else:
                             suggestion = get_fix_suggestion(rule)
-
                             st.error(f"{pretty} — FAIL")
                             st.caption(f"Suggested Fix: {suggestion}")
 
-                st.divider()
+            # -----------------------------
+            # Rule Breakdown
+            # -----------------------------
 
-                # -----------------------------
-                # Evaluation Comparison Charts
-                # -----------------------------
-
+            with tab3:
                 st.subheader("Evaluation Comparison")
+
                 def safe_number(value):
                     return value if isinstance(value, (int, float)) else 0
+
                 readability_data = {
                     "Metric": [
                         "Reading Level",
@@ -193,15 +456,15 @@ if st.button("Generate Summaries"):
                 )
 
                 chart = alt.Chart(chart_data).mark_bar().encode(
-                    x=alt.X("Metric:N", title="Metric"),
+                    x=alt.X("Metric:N", title=None, axis=alt.Axis(labelAngle=0)),
                     y=alt.Y("Value:Q", title="Value"),
-                    color="Version:N",
-                    xOffset="Version:N"
+                    color=alt.Color("Version:N", title="Key")
+                ).properties(
+                    width="container",
+                    height=400
                 )
 
                 st.altair_chart(chart, use_container_width=True)
-
-                # Compliance score comparison
 
                 score_df = pd.DataFrame({
                     "Version": ["Baseline", "ADHD"],
@@ -212,14 +475,22 @@ if st.button("Generate Summaries"):
                 })
 
                 st.write("### ADHD Compliance Score")
+                
+                score_chart = alt.Chart(score_df).mark_bar().encode(
+                    x=alt.X("Version:N",title=None, axis=alt.Axis(labelAngle=0)),
+                    y=alt.Y("Compliance Score:Q")
+                ).properties(
+                    height=400
+                )
 
-                st.bar_chart(score_df.set_index("Version"))
+                st.altair_chart(score_chart, use_container_width=True)
 
                 st.caption(
                     "Comparison of readability and structural accessibility between standard AI summaries and ADHD-constrained summaries."
                 )
 
-            except RuntimeError as e:
-                st.error(f"API Error: {e}")
-            except Exception:
-                st.error("Unexpected Error has occured. Please try again.")
+        except RuntimeError as e:
+            st.error(f"API Error: {e}")
+        except Exception:
+            st.error("Unexpected Error has occured. Please try again.")
+
