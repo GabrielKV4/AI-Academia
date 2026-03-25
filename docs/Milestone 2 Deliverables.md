@@ -38,6 +38,7 @@ Your Milestone 2 MVP must support this exact scenario:
    - compliance score
    - rule-by-rule pass/fail results
    - quantitative comparison metrics
+7. Minimum functioning GUI
 
 If any of these steps fail during the demo, the MVP is incomplete.
 
