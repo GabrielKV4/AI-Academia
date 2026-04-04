@@ -3,6 +3,8 @@ import pandas as pd
 import altair as alt
 from src.compliance_checker import ComplianceChecker
 from src.evaluator import evaluate_input
+import streamlit.components.v1 as components
+import random
 
 # -----------------------------
 # Page Configuration
@@ -364,7 +366,7 @@ if generate_clicked:
                         sections[current_section] += line + "\n"
 
                 # Expandable sections for ADHD summary
-                with st.expander("🎯 Learning Objectives"):
+                with st.expander("🎯 Learning Objectives", expanded=True):
                     st.write(sections["Learning Objectives"] or "No content found.")
 
                 with st.expander("🧩 Key Concepts"):
@@ -455,11 +457,25 @@ if generate_clicked:
                     value_name="Value"
                 )
 
-                chart = alt.Chart(chart_data).mark_bar().encode(
-                    x=alt.X("Metric:N", title=None, axis=alt.Axis(labelAngle=0)),
-                    y=alt.Y("Value:Q", title="Value"),
+                base = alt.Chart(chart_data).mark_bar().encode(
+                    x=alt.X("Metric:N", title=None, axis=alt.Axis(labelAngle=0, labelLimit=200)),
+                    y=alt.Y("Value:Q", title="Words / Grade Level"),
+                    xOffset="Version:N",
                     color=alt.Color("Version:N", title="Key")
-                ).properties(
+                )
+                
+                bars = base.mark_bar(width=40)
+                
+                text = base.mark_text(
+                    dy=-10,
+                    fontSize=14,
+                    fontWeight="bold",
+                ).encode(
+                    text=alt.Text("Value:Q", format=".0f")
+                )
+                
+                
+                chart = (bars + text).properties(
                     width="container",
                     height=400
                 )
@@ -488,6 +504,19 @@ if generate_clicked:
                 st.caption(
                     "Comparison of readability and structural accessibility between standard AI summaries and ADHD-constrained summaries."
                 )
+            
+            
+            html_code = f"""
+            <div id="scroll-to-me" style='background: cyan; height=1px;'>hi</div>
+            <script id="{random.randint(1000, 9999)}">
+            var e = document.getElementById("scroll-to-me");
+            if (e) {{
+                e.scrollIntoView({{behavior: "smooth"}});
+                e.remove();
+            }}
+            </script>
+            """
+            components.html(html_code)
 
         except RuntimeError as e:
             st.error(f"API Error: {e}")
