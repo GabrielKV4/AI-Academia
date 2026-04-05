@@ -3,26 +3,25 @@ from src.compliance_checker import ComplianceChecker
 
 
 def generate_baseline_summary(text):
-    def generate_baseline_summary(text):
-        try:
-            if not text or not isinstance(text, str):
-                return "ERROR: Invalid input text."
+    try:
+        if not text or not isinstance(text, str):
+            return "ERROR: Invalid input text."
 
-            prompt = f"""
-            Summarize the following study material clearly and concisely.
+        prompt = f"""
+        Summarize the following study material clearly and concisely.
 
-            {text}
-            """
+        {text}
+        """
 
-            summary = call_llm(prompt)
+        summary = call_llm(prompt)
 
-            if not summary or summary.startswith("ERROR") or summary.startswith("Error"):
-                return "ERROR: Failed to generate baseline summary."
+        if not summary or summary.startswith("ERROR") or summary.startswith("Error"):
+            return summary
 
-            return summary.strip()
+        return summary.strip()
 
-        except Exception as e:
-            return f"ERROR: Baseline generation failed - {str(e)}"
+    except Exception as e:
+        return f"ERROR: Baseline generation failed - {str(e)}"
 
     def generate_adhd_summary(text, max_attempts=2):
         if not text or not isinstance(text, str):
