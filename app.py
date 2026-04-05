@@ -258,8 +258,20 @@ st.markdown("""
 
 with col2:
     generate_clicked = False
-    if user_input.strip() and 15 < len(user_input.split()) < 12000:
-        generate_clicked = st.button("Generate Summaries", use_container_width=True)
+
+    if isinstance(user_input, str):
+        word_count = len(user_input.split())
+
+        if not user_input.strip():
+            st.warning("Please enter some text.")
+        elif word_count <= 15:
+            st.warning("Input is too short. Please provide more content.")
+        elif word_count >= 12000:
+            st.warning("Input is too long. Please reduce the size.")
+        else:
+            generate_clicked = st.button("Generate Summaries", use_container_width=True)
+    else:
+        st.error("Invalid input type.")
         
 # -----------------------------
 # Fix Suggestions for Rules
@@ -389,7 +401,7 @@ if generate_clicked:
             checker = ComplianceChecker(adhd)
             compliance = checker.run_all_checks()
 
-            score = compliance["overall_score"]
+            score = compliance.get("overall_score", 0)
 
             with tab2:
                 st.subheader("ADHD Compliance Results")

@@ -41,7 +41,7 @@ def evaluate_input(input_text):
 
     print("Generating ADHD-constrained summary...")
     adhd = generate_adhd_summary(input_text)
-    if adhd.startswith("ERROR:"):
+    if adhd.startwith("ERROR:"):
         raise RuntimeError(adhd)
 
     # Run compliance checks

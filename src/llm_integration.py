@@ -26,7 +26,13 @@ def call_llm(prompt, temperature=0.3):
             temperature=temperature,
         )
 
+        if not response or not hasattr(response, "choices") or not response.choices:
+            return "ERROR: Invalid response from LLM."
+
         content = response.choices[0].message.content
+
+        if not content or not content.strip():
+            return "ERROR: LLM returned an empty response."
 
         if not content or not content.strip():
             return "ERROR: LLM returned an empty response."
@@ -37,4 +43,4 @@ def call_llm(prompt, temperature=0.3):
 
     # Provides clear error message
     except Exception as e:
-        return f"Error: LLM request failed - {str(e)}"
+        return f"ERROR: LLM request failed - {str(e)}"
