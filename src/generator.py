@@ -3,16 +3,18 @@ from src.compliance_checker import ComplianceChecker
 
 
 def generate_baseline_summary(text):
-    summary = call_llm(prompt)
-    if summary.startswith("ERROR:"):
-        raise RuntimeError(summary)
     prompt = f"""
     Summarize the following study material clearly and concisely.
 
     {text}
     """
 
-    return call_llm(prompt)
+    summary = call_llm(prompt)
+
+    if summary.startswith("ERROR"):
+        raise RuntimeError(summary)
+
+    return summary
 
 
 def generate_adhd_summary(text, max_attempts=2):

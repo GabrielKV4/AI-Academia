@@ -203,10 +203,11 @@ class ComplianceChecker:
         )
 
     def compute_score(self):
-        if score.total_rules == 0:
+        if self.total_rules == 0:  # ✅ FIXED
             self.results['overall_score'] = 0
             self.results['adhd_compliant'] = False
             return
+
         score = (self.passed_rules / self.total_rules) * 100
         self.results["overall_score"] = round(score, 2)
         self.results["adhd_compliant"] = score >= 80

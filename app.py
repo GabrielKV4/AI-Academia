@@ -5,6 +5,7 @@ from src.compliance_checker import ComplianceChecker
 from src.evaluator import evaluate_input
 import streamlit.components.v1 as components
 import random
+import traceback
 
 # -----------------------------
 # Page Configuration
@@ -520,6 +521,7 @@ if generate_clicked:
 
         except RuntimeError as e:
             st.error(f"API Error: {e}")
-        except Exception:
-            st.error("Unexpected Error has occured. Please try again.")
+        except Exception as e:
+            st.error(f"Unexpected Error: {e}")
+            traceback.print_exc()
 
