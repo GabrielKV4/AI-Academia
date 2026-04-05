@@ -4,7 +4,7 @@ import re
 
 class ComplianceChecker:
     def __init__(self, text):
-        self.text = text
+        self.text = text if isinstance(text, str) else ""
         self.results = {}
         self.total_rules = 0
         self.passed_rules = 0
@@ -203,13 +203,21 @@ class ComplianceChecker:
         )
 
     def compute_score(self):
-        if score.total_rules == 0:
-            self.results['overall_score'] = 0
-            self.results['adhd_compliant'] = False
-            return
-        score = (self.passed_rules / self.total_rules) * 100
-        self.results["overall_score"] = round(score, 2)
-        self.results["adhd_compliant"] = score >= 80
+        try:
+            if self.total_rules == 0:
+                self.results['overall_score'] = 0
+                self.results['adhd_compliant'] = False
+                return
+
+            score = (self.passed_rules / self.total_rules) * 100
+
+            self.results["overall_score"] = round(score, 2)
+            self.results["adhd_compliant"] = score >= 80
+
+        except Exception as e:
+            self.results["overall_score"] = 0
+            self.results["adhd_compliant"] = False
+            self.results["error"] = f"Score calculation failed: {str(e)}"
 
     def run_all_checks(self):
         self.results = {}

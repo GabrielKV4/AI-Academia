@@ -34,39 +34,66 @@ def reading_level(text):
 
 def evaluate_input(input_text):
 
-    print("Generating baseline summary...")
-    baseline = generate_baseline_summary(input_text)
-    if baseline.startswith("ERROR:"):
-        raise RuntimeError(baseline)
+    # Validate input early
+    if not input_text or not isinstance(input_text, str):
+        raise ValueError("Invalid input provided. Expected non-empty string.")
 
-    print("Generating ADHD-constrained summary...")
-    adhd = generate_adhd_summary(input_text)
-    if adhd.startwith("ERROR:"):
-        raise RuntimeError(adhd)
+    try:
+        print("Generating baseline summary...")
+        baseline = generate_baseline_summary(input_text)
 
-    # Run compliance checks
-    baseline_checker = ComplianceChecker(baseline)
-    baseline_results = baseline_checker.run_all_checks()
+        if not baseline or baseline.startswith("ERROR") or baseline.startswith("Error"):
+            raise RuntimeError(baseline or "Baseline generation failed.")
 
-    adhd_checker = ComplianceChecker(adhd)
-    adhd_results = adhd_checker.run_all_checks()
+        print("Generating ADHD-constrained summary...")
+        adhd = generate_adhd_summary(input_text)
 
-    results = {
-        "baseline": {
-            "reading_level": reading_level(baseline),
-            "avg_sentence_length": average_sentence_length(baseline),
-            "avg_paragraph_length": average_paragraph_length(baseline),
-            "compliance_score": baseline_results["overall_score"]
-        },
-        "adhd": {
-            "reading_level": reading_level(adhd),
-            "avg_sentence_length": average_sentence_length(adhd),
-            "avg_paragraph_length": average_paragraph_length(adhd),
-            "compliance_score": adhd_results["overall_score"]
+        if not adhd or adhd.startswith("ERROR") or adhd.startswith("Error"):
+            raise RuntimeError(adhd or "ADHD summary generation failed.")
+
+        # Run compliance checks safely
+        try:
+            baseline_checker = ComplianceChecker(baseline)
+            baseline_results = baseline_checker.run_all_checks()
+        except Exception:
+            baseline_results = {"overall_score": 0}
+
+        try:
+            adhd_checker = ComplianceChecker(adhd)
+            adhd_results = adhd_checker.run_all_checks()
+        except Exception:
+            adhd_results = {"overall_score": 0}
+
+        # Safely compute metrics
+        try:
+            baseline_reading = reading_level(baseline)
+        except Exception:
+            baseline_reading = 0
+
+        try:
+            adhd_reading = reading_level(adhd)
+        except Exception:
+            adhd_reading = 0
+
+        results = {
+            "baseline": {
+                "reading_level": baseline_reading,
+                "avg_sentence_length": average_sentence_length(baseline),
+                "avg_paragraph_length": average_paragraph_length(baseline),
+                "compliance_score": baseline_results.get("overall_score", 0)
+            },
+            "adhd": {
+                "reading_level": adhd_reading,
+                "avg_sentence_length": average_sentence_length(adhd),
+                "avg_paragraph_length": average_paragraph_length(adhd),
+                "compliance_score": adhd_results.get("overall_score", 0)
+            }
         }
-    }
 
-    return results, baseline, adhd
+        return results, baseline, adhd
+
+    except Exception as e:
+        raise RuntimeError(f"Summary generation failed: {str(e)}")
 
 
 # -----------------------------
