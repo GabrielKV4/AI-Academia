@@ -216,7 +216,7 @@ user_input = st.text_area(
 col1, col2 = st.columns([3, 1])  # adjust ratio if needed
 
 with col1:
-    demo_mode = st.checkbox("Use Demo Mode (no API calls)", value=True)
+    demo_mode = st.checkbox("Use Demo Mode (no API calls)", value=False)
 
 # -----------------------------
 # Generate Button CSS

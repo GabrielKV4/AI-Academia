@@ -174,10 +174,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 
-### 3. Run Evaluation Script
+### 3. Run Evaluation Script/ ClearpathAI App
 
 
-python src/evaluator.py
+streamlit run app.py
 
 
 The script will:

@@ -23,57 +23,6 @@ def generate_baseline_summary(text):
     except Exception as e:
         return f"ERROR: Baseline generation failed - {str(e)}"
 
-    def generate_adhd_summary(text, max_attempts=2):
-        if not text or not isinstance(text, str):
-            return "ERROR: Invalid input text."
-
-        last_summary = None
-
-        for attempt in range(max_attempts):
-            try:
-                prompt = f"""
-                Generate an ADHD-friendly study summary following these STRICT rules:
-
-                STRUCTURE:
-                - Must include the exact section headers:
-                  ## Learning Objectives
-                  ## Key Concepts
-                  ## Recall Questions
-
-                RULES:
-                - Maximum 20 words per sentence
-                - Maximum 80 words per paragraph
-                - Reading level at or below Grade 8
-                - Use bullet points in Key Concepts
-                - At least 3 and no more than 6 bullet points in Key Concepts
-                - At least 2 recall questions at the end
-                - Leave a blank line between sections
-                - Any formula must be on its own line
-
-                Only output the formatted summary.
-
-                Study Material:
-                {text}
-                """
-
-                summary = call_llm(prompt)
-
-                if not summary or summary.startswith("ERROR"):
-                    continue
-
-                checker = ComplianceChecker(summary)
-                results = checker.run_all_checks()
-
-                if results.get("adhd_compliant"):
-                    return summary
-
-                last_summary = summary
-
-            except Exception:
-                continue
-
-        return last_summary or "ERROR: Failed to generate ADHD summary."
-
 
 def generate_adhd_summary(text, max_attempts=2):
 
