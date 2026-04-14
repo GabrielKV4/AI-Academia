@@ -368,6 +368,7 @@ Parkinson's disease (PD) is a progressive neurodegenerative disorder marked by t
 2. How is Parkinson's diease diagnosied?
 
 ### Evaluation Results
+
 **Baseline**
 
 | Reading Level | Avg Sentence Length | Avg Paragraph Length | Compliance Score |
@@ -383,3 +384,42 @@ Parkinson's disease (PD) is a progressive neurodegenerative disorder marked by t
 ## Input Case 10: Virtual Cells Research Paper
 
 ### Source
+https://pmc.ncbi.nlm.nih.gov/articles/PMC12789685/
+
+### Original Input
+Virtual cell models also help elucidate tissue-specific differences in drug responses15. For example, integrating multi-omics data from hepatocytes and renal tubular epithelial cells enables prediction of tissue-specific toxicological responses under the same drug exposure6. This not only helps explain interindividual variability in adverse drug reactions but also offers a technical pathway to reduce animal experimentation and advance New Approach Methodologies (NAMs)6,16. The advent of virtual cell models is shifting biomedicine from a wet-lab-dependent, “validation-driven” paradigm toward a data- and prediction-driven simulation–validation closed loop1,6. In sum, AI-driven virtual cell models are becoming a key bridge between molecular-mechanism research and preclinical drug evaluation, providing data-driven support throughout the pipeline from hypothesis generation to mechanistic verification1,5. Driven by an evidence-progression framework, the narrative advances from model construction to evaluation and validation, to virtual-cell use cases, translational barriers, and forward outlook. This translational driver integrates technical capability, testability, utility, and compliance pathways into a preclinical evidence chain.
+
+### Basline Summary
+Virtual cell models are instrumental in understanding tissue-specific drug responses, particularly by integrating multi-omnics data from different cell types, such as hepatocytes and renal tubular epithelial cells. This integration aids in predicting toxicological responses to drugs, thereby clarifying interindividual variability in adverse reactions and reducing the need for animal testing through New Approach Methodologies (NAMs). The emergence of of these models is transforming biomedicine from a traditional wet-lab approach to a more data-driven, predictive framework. AI-driven virtual cell models serve as a crucial link between molecular research and preclinical drug evaluation, supporting the entire process from hypothesis generation to mechanistic verification. The study emphazies a structured progression from model development to validation and practical application, highlighting the importance of technical capability, testability, utility, and compliance in the preclinical evidence chain.
+
+### ADHD Summary
+
+**Learning Objectives**
+- Understand the role of virtual cell models in drug responses.
+- Learn how multi-omics data can predict toxicological responses.
+- Recognize the shift in biomedicine towards data-driven methods.
+
+**Key Concepts**
+- Virtual cell models show differences in drug responses across tissues.
+- Multi-omics data help predict tissue-specifc toxic responses.
+- These models reduce the need for animal testing.
+- AI-driven models support drug evaluation from start to finish.
+- The process includes model construction, evaluation, and validation.
+
+**Recall Questions**
+1. How do virtual cell models help in understanding drug resposnes?
+2. What is the benefit of using multi-omics data in drug evalution?
+
+### Evaluation Results
+
+**Baseline**
+
+| Reading Level | Avg Sentence Length | Avg Paragraph Length | Compliance Score |
+| ------------- | ------------------- | -------------------- | ---------------- |
+| 11.3274       | 9                   | 18                   | 20%              |
+
+**ADHD**
+
+| Reading Level | Avg Sentence Length | Avg Paragraph Length | Compliance Score |
+| ------------- | ------------------- | -------------------- | ---------------- |
+| 21.6394       | 25.8                | 129                  | 90%              |
