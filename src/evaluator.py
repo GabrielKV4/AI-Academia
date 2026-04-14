@@ -2,6 +2,7 @@ import re
 import textstat
 from src.generator import generate_baseline_summary, generate_adhd_summary
 from src.compliance_checker import ComplianceChecker
+from src.input_validator import validate_input_text
 
 
 # -----------------------------
@@ -34,8 +35,9 @@ def reading_level(text):
 
 def evaluate_input(input_text):
     # Validate input early
-    if not input_text or not isinstance(input_text, str):
-        raise ValueError("Invalid input provided. Expected non-empty string.")
+    is_valid, validation_message = validate_input_text(input_text)
+    if not is_valid:
+        raise ValueError(validation_message)
 
     try:
         print("Generating baseline summary...")

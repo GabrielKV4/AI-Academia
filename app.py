@@ -6,6 +6,7 @@ from src.evaluator import evaluate_input
 import streamlit.components.v1 as components
 import random
 import traceback
+from src.input_validator import validate_input_text
 
 # -----------------------------
 # Page Configuration
@@ -303,7 +304,11 @@ if generate_clicked:
     with st.spinner("Generating summaries and evaluating compliance..."):
 
         try:
-
+            if not demo_mode:
+                is_valid, validation_message = validate_input_text(user_input)
+                if not is_valid:
+                    st.error(validation_message)
+                    st.stop()
             # Demo mode with fake outputs to test UI
             if demo_mode:
                 # Fake outputs (no API call)
