@@ -156,37 +156,60 @@ ClearpathAI/
 
 ## How to Run
 
-### 1. Activate Virtual Environment
+### 1. Clone the Repository
+```bash
+git clone https://github.com/GabrielKV4/AI-Academia
+cd AI-Academia
+```
+
+### 2. Activate Virtual Environment
 
 Windows:
-
+```bash
+python -m venv .venv
 .venv\Scripts\activate
-
+```
 
 Mac/Linux:
-
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
+```
 
-
-### 2. Install Dependencies
-
-
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Configure API Key
 
-### 3. Run Evaluation Script/ ClearpathAI App
+Windows Powershell
+```powershell
+$env:OPENAI_API_KEY="your_api_key_here"
+```
 
+Mac/Linux
+```bash
+export OPENAI_API_KEY="your_api_key_here"
+```
 
+### 5. Run the Application
+```bash
 streamlit run app.py
+```
 
+## Application Workflow
 
-The script will:
-
-- Generate both summaries
-- Evaluate compliance
-- Print quantitative comparison results
-
----
+1. Paste study material into the text box **or upload a file** (`.pdf`, `.txt`, `.docx`)
+2. Click **Generate Summaries**
+3. Review:
+   - Baseline Summary
+   - ADHD-Friendly Summary
+   - Compliance Results
+   - Charts
+4. Optional
+   - Download results as a `.txt` or `.md` file
+   - View history of past generations made within the current session
 
 ## Example Output Metrics
 
