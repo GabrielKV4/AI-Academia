@@ -86,27 +86,3 @@ def generate_adhd_summary(text, max_attempts=3):
     print("All attempts completed. Returning best available summary.\n")
     return last_summary or "ERROR: Failed to generate ADHD summary."
 
-
-def generate_summaries(text):
-
-    baseline_prompt = f"""
-    Summarize the following educational text:
-
-    {text}
-    """
-
-    adhd_prompt = f"""
-    Create an ADHD-friendly summary of the following text.
-    Use sections:
-    - Learning Objectives
-    - Key Concepts
-    - Recall Questions
-
-    Text:
-    {text}
-    """
-
-    baseline_summary = call_llm(baseline_prompt)
-    adhd_summary = call_llm(adhd_prompt)
-
-    return baseline_summary, adhd_summary
