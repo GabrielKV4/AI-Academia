@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+from src.input_validator import validate_input_text
 from src.compliance_checker import ComplianceChecker
 from src.evaluator import evaluate_input
 import streamlit.components.v1 as components
