@@ -7,6 +7,7 @@ from src.evaluator import evaluate_input
 import streamlit.components.v1 as components
 import random
 import traceback
+from src.input_validator import validate_input_text
 
 # -----------------------------
 # Page Configuration
@@ -17,6 +18,13 @@ st.set_page_config(
     page_icon="📘",
     layout="wide"
 )
+
+# -----------------------------
+# Session State Initialization
+# -----------------------------
+
+if "history" not in st.session_state:
+    st.session_state.history = []
 
 # -----------------------------
 # Background Styling
@@ -211,10 +219,89 @@ user_input = st.text_area(
 )
 
 # -----------------------------
-# Demo Mode and Generate Button Setup
+# Export Content Builder
 # -----------------------------
 
-col1, col2 = st.columns([3, 1])  # adjust ratio if needed
+def build_export_content(user_input, baseline, adhd, compliance, results, file_type="txt"):
+    score = compliance.get("overall_score", 0)
+    
+    rule_lines = []
+    for rule, data in compliance.items():
+        if isinstance(data, dict):
+            status = data["status"]
+            pretty = rule.replace("_", " ").title()
+            rule_lines.append(f"{pretty}: {status.upper()}")
+    rule_text = "\n\t".join(rule_lines)
+    if file_type == "txt":
+        
+        content = f"""
+        ClearPath AI Summary Export
+        
+        Original Input:
+        {user_input}
+
+        Baseline Summary:
+        {baseline}
+
+        ADHD-Friendly Summary:
+        {adhd}
+
+        Compliance Score: {score}%
+
+        Rule Breakdown:
+        {rule_text}
+        
+        Readability Metrics:
+        --- Baseline --- 
+        Reading Level: {results['baseline']['reading_level']} 
+        Avg Sentence Length: {results['baseline']['avg_sentence_length']} 
+        Avg Paragraph Length: {results['baseline']['avg_paragraph_length']}
+        
+        --- ADHD Version --- 
+        Reading Level: {results['adhd']['reading_level']}
+        Avg Sentence Length: {results['adhd']['avg_sentence_length']}
+        Avg Paragraph Length: {results['adhd']['avg_paragraph_length']}
+        
+        
+        """
+    elif file_type == "md":
+        content = f"""
+        # ClearPath AI Summary Export
+        
+        ## Original Input
+        {user_input}
+
+        ## Baseline Summary
+        {baseline}
+
+        ## ADHD-Friendly Summary
+        {adhd}
+
+        ## Compliance Score
+        {score}%
+
+        ## Rule Breakdown
+        {rule_text}
+        
+        ## Readability Metrics
+        --- **Baseline** --- 
+        Reading Level: {results['baseline']['reading_level']}
+        Avg Sentence Length: {results['baseline']['avg_sentence_length']}
+        Avg Paragraph Length: {results['baseline']['avg_paragraph_length']}
+        --- **ADHD Version** ---
+        Reading Level: {results['adhd']['reading_level']}
+        Avg Sentence Length: {results['adhd']['avg_sentence_length']}
+        Avg Paragraph Length: {results['adhd']['avg_paragraph_length']}
+        
+        
+        """
+    return content
+
+# -----------------------------
+# Demo Mode (remove in final version), upload file area, and  Generate Button Setup
+# -----------------------------
+
+col1, col2, col3, col4 = st.columns([1, 1, 2, 2])  # adjust ratio if needed
 
 with col1:
     demo_mode = st.checkbox("Use Demo Mode (no API calls)", value=False)
@@ -257,7 +344,54 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# -----------------------------
+# History Button Setup
+# -----------------------------
+
 with col2:
+    view_history_clicker = st.button("History", use_container_width=True)
+
+# -----------------------------
+# File Upload Handling
+# -----------------------------
+
+with col3:
+    uploaded_file = st.file_uploader(
+        "Upload PDF or Txt File",
+        type=["pdf", "txt", "docx"],
+        accept_multiple_files=False,
+    )
+    
+    if uploaded_file is not None:
+        if uploaded_file.type == "application/pdf":
+            try:
+                reader = PdfReader(uploaded_file)
+                text = ""
+                for page in reader.pages:
+                    text += page.extract_text() + "\n"
+                user_input = text.strip()
+                st.success("PDF content loaded successfully!")
+            except Exception as e:
+                st.error(f"Error reading PDF: {e}")
+        elif uploaded_file.type == "text/plain":
+            try:
+                text = uploaded_file.read().decode("utf-8")
+                user_input = text.strip()
+                st.success("Text file loaded successfully!")
+            except Exception as e:
+                st.error(f"Error reading text file: {e}")
+        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            try:
+                document = Document(uploaded_file)
+                text = ""
+                for para in document.paragraphs:
+                    text += para.text + "\n"
+                user_input = text.strip()
+                st.success("Word document loaded successfully!")
+            except Exception as e:
+                st.error(f"Error reading Word document: {e}")
+
+with col4:
     generate_clicked = False
 
     if isinstance(user_input, str):
@@ -296,6 +430,36 @@ def get_fix_suggestion(rule):
     return suggestions.get(rule, "Review formatting for this rule.")
 
 # -----------------------------
+# History Button Handler
+# -----------------------------
+
+if view_history_clicker:
+    if st.session_state.history:
+        st.markdown("### History of Inputs and Results")
+        
+        for item in reversed(st.session_state.history):
+            with st.expander(f"Entry #{item['id']} - Compliance Score: {item['score']}%"):
+                st.write("**Input:**")
+                st.write(item["input"])
+                st.write("**Baseline Summary:**")
+                st.write(item["baseline"])
+                st.write("**ADHD-Friendly Summary:**")
+                st.write(item["adhd"])
+                st.write("**Compliance Breakdown:**")
+                for rule, data in item["compliance"].items():
+                    if isinstance(data, dict):
+                        status = data["status"]
+                        pretty = rule.replace("_", " ").title()
+                        if status == "pass":
+                            st.success(f"{pretty} — PASS")
+                        else:
+                            suggestion = get_fix_suggestion(rule)
+                            st.error(f"{pretty} — FAIL")
+                            st.caption(f"Suggested Fix: {suggestion}")
+    else :
+        st.info("No history yet. Generate some summaries to see the history here.")
+
+# -----------------------------
 # Generate Button Handler
 # -----------------------------
 
@@ -304,7 +468,11 @@ if generate_clicked:
     with st.spinner("Generating summaries and evaluating compliance..."):
 
         try:
-
+            if not demo_mode:
+                is_valid, validation_message = validate_input_text(user_input)
+                if not is_valid:
+                    st.error(validation_message)
+                    st.stop()
             # Demo mode with fake outputs to test UI
             if demo_mode:
                 # Fake outputs (no API call)
@@ -519,6 +687,25 @@ if generate_clicked:
                     "Comparison of readability and structural accessibility between standard AI summaries and ADHD-constrained summaries."
                 )
             
+            # -----------------------------
+            # Save History to Session State
+            # -----------------------------
+            
+            history_entry = {
+                "id": len(st.session_state.history) + 1,
+                "input": user_input,
+                "baseline": baseline,
+                "adhd": adhd,
+                "results": results,
+                "compliance": compliance,
+                "score": score
+            }
+
+            st.session_state.history.append(history_entry)
+
+            # -----------------------------
+            # Scroll to Results
+            # -----------------------------
             
             html_code = f"""
             <div id="scroll-to-me" style='background: cyan; height=1px;'>hi</div>
@@ -531,6 +718,31 @@ if generate_clicked:
             </script>
             """
             components.html(html_code)
+
+            # -----------------------------
+            # Export content
+            # -----------------------------
+            
+            st.markdown("Export Content")
+            
+            save_col1, save_col2 = st.columns(2)
+            with save_col1:
+                export_txt = build_export_content(user_input, baseline, adhd, compliance, results, file_type="txt")
+                st.download_button(
+                    label="Download as .txt",
+                    data=export_txt,
+                    file_name="clearpath_summary.txt",
+                    mime="text/plain"
+                )
+            with save_col2:
+                export_md = build_export_content(user_input, baseline, adhd, compliance, results, file_type="md")
+                st.download_button(
+                    label="Download as .md",
+                    data=export_md,
+                    file_name="clearpath_summary.md",
+                    mime="text/markdown"
+                )
+
 
         except RuntimeError as e:
             st.error(f"API Error: {e}")

@@ -2,6 +2,7 @@ import re
 import textstat
 from src.generator import generate_baseline_summary, generate_adhd_summary
 from src.compliance_checker import ComplianceChecker
+from src.input_validator import validate_input_text
 
 
 # -----------------------------
@@ -34,8 +35,9 @@ def reading_level(text):
 
 def evaluate_input(input_text):
     # Validate input early
-    if not input_text or not isinstance(input_text, str):
-        raise ValueError("Invalid input provided. Expected non-empty string.")
+    is_valid, validation_message = validate_input_text(input_text)
+    if not is_valid:
+        raise ValueError(validation_message)
 
     try:
         print("Generating baseline summary...")
@@ -76,14 +78,14 @@ def evaluate_input(input_text):
         results = {
             "baseline": {
                 "reading_level": baseline_reading,
-                "avg_sentence_length": average_sentence_length(baseline),
-                "avg_paragraph_length": average_paragraph_length(baseline),
+                "average_sentence_length": average_sentence_length(baseline),
+                "average_paragraph_length": average_paragraph_length(baseline),
                 "compliance_score": baseline_results.get("overall_score", 0)
             },
             "adhd": {
                 "reading_level": adhd_reading,
-                "avg_sentence_length": average_sentence_length(adhd),
-                "avg_paragraph_length": average_paragraph_length(adhd),
+                "average_sentence_length": average_sentence_length(adhd),
+                "average_paragraph_length": average_paragraph_length(adhd),
                 "compliance_score": adhd_results.get("overall_score", 0)
             }
         }
@@ -115,10 +117,10 @@ def print_comparison(results):
           round(results["baseline"]["reading_level"] - results["adhd"]["reading_level"], 2))
 
     print("Sentence Length ↓",
-          round(results["baseline"]["avg_sentence_length"] - results["adhd"]["avg_sentence_length"], 2))
+          round(results["baseline"]["average_sentence_length"] - results["adhd"]["average_sentence_length"], 2))
 
     print("Paragraph Length ↓",
-          round(results["baseline"]["avg_paragraph_length"] - results["adhd"]["avg_paragraph_length"], 2))
+          round(results["baseline"]["average_paragraph_length"] - results["adhd"]["average_paragraph_length"], 2))
 
     print("Compliance ↑",
           round(results["adhd"]["compliance_score"] - results["baseline"]["compliance_score"], 2))
@@ -150,37 +152,3 @@ There are several techniques and approaches for scraping data from websites. See
     print("\n--- ADHD Summary ---\n")
     print(adhd)
 
-
-def avg_sentence_length(text):
-    sentences = re.split(r'[.!?]', text)
-    sentences = [s.strip() for s in sentences if s.strip()]
-
-    if not sentences:
-        return 0
-
-    word_counts = [len(s.split()) for s in sentences]
-
-    return sum(word_counts) / len(word_counts)
-
-
-def avg_paragraph_length(text):
-    paragraphs = [p.strip() for p in text.split("\n") if p.strip()]
-
-    if not paragraphs:
-        return 0
-
-    word_counts = [len(p.split()) for p in paragraphs]
-
-    return sum(word_counts) / len(word_counts)
-
-
-def evaluate_text(baseline, adhd):
-
-    results = {
-        "Baseline Avg Sentence Length": round(avg_sentence_length(baseline), 2),
-        "ADHD Avg Sentence Length": round(avg_sentence_length(adhd), 2),
-        "Baseline Avg Paragraph Length": round(avg_paragraph_length(baseline), 2),
-        "ADHD Avg Paragraph Length": round(avg_paragraph_length(adhd), 2),
-    }
-
-    return results
