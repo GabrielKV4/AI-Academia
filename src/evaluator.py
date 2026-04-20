@@ -1,4 +1,6 @@
 import re
+from turtle import st
+
 import textstat
 from src.generator import generate_baseline_summary, generate_adhd_summary
 from src.compliance_checker import ComplianceChecker
@@ -37,7 +39,9 @@ def evaluate_input(input_text):
     # Validate input early
     is_valid, validation_message = validate_input_text(input_text)
     if not is_valid:
-        raise ValueError(validation_message)
+        st.error(f"❌ {validation_message}")
+        st.info("Please revise your input and try again.")
+        st.stop()
 
     try:
         print("Generating baseline summary...")
@@ -78,14 +82,14 @@ def evaluate_input(input_text):
         results = {
             "baseline": {
                 "reading_level": baseline_reading,
-                "average_sentence_length": average_sentence_length(baseline),
-                "average_paragraph_length": average_paragraph_length(baseline),
+                "avg_sentence_length": average_sentence_length(baseline),
+                "avg_paragraph_length": average_paragraph_length(baseline),
                 "compliance_score": baseline_results.get("overall_score", 0)
             },
             "adhd": {
                 "reading_level": adhd_reading,
-                "average_sentence_length": average_sentence_length(adhd),
-                "average_paragraph_length": average_paragraph_length(adhd),
+                "avg_sentence_length": average_sentence_length(adhd),
+                "avg_paragraph_length": average_paragraph_length(adhd),
                 "compliance_score": adhd_results.get("overall_score", 0)
             }
         }

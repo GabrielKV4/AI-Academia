@@ -1,7 +1,8 @@
+from xml.dom.minidom import Document
+
 import streamlit as st
 import pandas as pd
 import altair as alt
-from src.input_validator import validate_input_text
 from src.compliance_checker import ComplianceChecker
 from src.evaluator import evaluate_input
 import streamlit.components.v1 as components
@@ -254,13 +255,13 @@ def build_export_content(user_input, baseline, adhd, compliance, results, file_t
         Readability Metrics:
         --- Baseline --- 
         Reading Level: {results['baseline']['reading_level']} 
-        Avg Sentence Length: {results['baseline']['avg_sentence_length']} 
-        Avg Paragraph Length: {results['baseline']['avg_paragraph_length']}
+        Avg Sentence Length: results['baseline'].get('avg_sentence_length', 0)
+        Avg Paragraph Length: results['baseline'].get('avg_paragraph_length', 0)
         
         --- ADHD Version --- 
         Reading Level: {results['adhd']['reading_level']}
-        Avg Sentence Length: {results['adhd']['avg_sentence_length']}
-        Avg Paragraph Length: {results['adhd']['avg_paragraph_length']}
+        Avg Sentence Length: results['adhd'].get('avg_sentence_length', 0)
+        Avg Paragraph Length: results['adhd'].get('avg_paragraph_length', 0)
         
         
         """
@@ -286,12 +287,12 @@ def build_export_content(user_input, baseline, adhd, compliance, results, file_t
         ## Readability Metrics
         --- **Baseline** --- 
         Reading Level: {results['baseline']['reading_level']}
-        Avg Sentence Length: {results['baseline']['avg_sentence_length']}
-        Avg Paragraph Length: {results['baseline']['avg_paragraph_length']}
+        Avg Sentence Length: results['baseline'].get('avg_sentence_length', 0)
+        Avg Paragraph Length: results['baseline'].get('avg_paragraph_length', 0)
         --- **ADHD Version** ---
         Reading Level: {results['adhd']['reading_level']}
-        Avg Sentence Length: {results['adhd']['avg_sentence_length']}
-        Avg Paragraph Length: {results['adhd']['avg_paragraph_length']}
+        Avg Sentence Length: results['adhd'].get('avg_sentence_length', 0)
+        Avg Paragraph Length: results['adhd'].get('avg_paragraph_length', 0)
         
         
         """
@@ -355,6 +356,10 @@ with col2:
 # File Upload Handling
 # -----------------------------
 
+class PdfReader:
+    pass
+
+
 with col3:
     uploaded_file = st.file_uploader(
         "Upload PDF or Txt File",
@@ -403,8 +408,6 @@ with col4:
             st.warning("Input is too short. Please provide more content.")
         elif word_count >= 12000:
             st.warning("Input is too long. Please reduce the size.")
-        else:
-            generate_clicked = st.button("Generate Summaries", use_container_width=True)
     else:
         st.error("Invalid input type.")
         
@@ -463,34 +466,49 @@ if view_history_clicker:
 # Generate Button Handler
 # -----------------------------
 
-if generate_clicked:
-    
-    with st.spinner("Generating summaries and evaluating compliance..."):
+generate_clicked = st.button("Generate Summaries", use_container_width=True)
 
-        try:
-            if not demo_mode:
-                is_valid, validation_message = validate_input_text(user_input)
-                if not is_valid:
-                    st.error(validation_message)
-                    st.stop()
-            # Demo mode with fake outputs to test UI
+if generate_clicked:
+    try:
+        # 1. Empty input
+        if not user_input.strip():
+            st.error("Please enter some text.")
+            st.stop()
+
+        # 2. Too short (STOP here if true)
+        word_count = len(user_input.split())
+        if word_count <= 15:
+            st.error("The input looks unreadable or not in English. Please enter clear English study material.")
+            st.stop()
+
+        # 3. Validation (ONLY runs if length is OK)
+        if not demo_mode:
+            is_valid, validation_message = validate_input_text(user_input)
+            if not is_valid:
+                st.error(validation_message)
+                st.stop()
+
+        with st.spinner("Generating summaries and evaluating compliance..."):
+
+            # -----------------------------
+            # Demo mode
+            # -----------------------------
             if demo_mode:
-                # Fake outputs (no API call)
                 baseline = "This is a baseline summary of the provided academic text. It is longer and more complex."
 
                 adhd = """Learning Objectives:
-            - Understand the main idea
-            - Identify key terms
+                       - Understand the main idea
+                       - Identify key terms
 
-            Key Concepts:
-            - Concept 1 explained simply
-            - Concept 2 broken down
-            - Concept 3 summarized
+                       Key Concepts:
+                       - Concept 1 explained simply
+                       - Concept 2 broken down
+                       - Concept 3 summarized
 
-            Recall Questions:
-            - What is the main idea?
-            - Why is this concept important?
-            """
+                       Recall Questions:
+                       - What is the main idea?
+                       - Why is this concept important?
+                       """
 
                 results = {
                     "baseline": {
@@ -506,19 +524,21 @@ if generate_clicked:
                         "compliance_score": 85
                     }
                 }
-            else:   # Real mode with API calls
+
+            # -----------------------------
+            # Real mode
+            # -----------------------------
+            else:
                 results, baseline, adhd = evaluate_input(user_input)
 
+            # API failure check
             if baseline.startswith("ERROR") or adhd.startswith("ERROR"):
                 st.error("Failed to generate summaries due to an API issue. Please try again.")
                 st.stop()
-
-            tab1, tab2, tab3 = st.tabs(["Summaries", "Compliance", "Charts"])
-
             # -----------------------------
             # Summary Comparison
             # -----------------------------
-
+            tab1, tab2, tab3 = st.tabs(["Summaries", "Compliance", "Charts"])
             with tab1:
                 
                 
@@ -619,13 +639,13 @@ if generate_clicked:
                     ],
                     "Baseline": [
                         safe_number(results["baseline"]["reading_level"]),
-                        safe_number(results["baseline"]["avg_sentence_length"]),
-                        safe_number(results["baseline"]["avg_paragraph_length"])
+                        safe_number(results["baseline"].get("avg_sentence_length", 0)),
+                        safe_number(results["baseline"].get("avg_paragraph_length", 0))
                     ],
                     "ADHD Version": [
                         safe_number(results["adhd"]["reading_level"]),
-                        safe_number(results["adhd"]["avg_sentence_length"]),
-                        safe_number(results["adhd"]["avg_paragraph_length"])
+                        safe_number(results["adhd"].get("avg_sentence_length", 0)),
+                        safe_number(results["adhd"].get("avg_paragraph_length", 0))
                     ]
                 }
 
@@ -686,7 +706,9 @@ if generate_clicked:
                 st.caption(
                     "Comparison of readability and structural accessibility between standard AI summaries and ADHD-constrained summaries."
                 )
-            
+            if baseline.startswith("ERROR") or adhd.startswith("ERROR"):
+                st.error(...)
+                st.stop()
             # -----------------------------
             # Save History to Session State
             # -----------------------------
@@ -744,9 +766,9 @@ if generate_clicked:
                 )
 
 
-        except RuntimeError as e:
-            st.error(f"API Error: {e}")
-        except Exception as e:
-            st.error(f"Unexpected Error: {e}")
-            traceback.print_exc()
+    except RuntimeError as e:
+        st.error(f"API Error: {e}")
+    except Exception as e:
+        st.error(f"Unexpected Error: {e}")
+        traceback.print_exc()
 

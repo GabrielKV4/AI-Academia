@@ -55,3 +55,17 @@ This ensures inclusion of evidence-based retrieval mechanisms.
 Text readability influences cognitive accessibility. Lower syntactic and lexical complexity improves comprehension and reduces cognitive strain (Crossley et al., 2008).
 
 The system enforces a maximum Flesch-Kincaid Grade Level of 8 to align with accessibility best practices.
+
+---
+
+## Structural Constraints and Information Chunking
+
+Research in cognitive psychology suggests that human working memory can only process a limited number of information chunks at once (Miller, 1956; Cowan, 2001).
+
+To align with this, the system enforces:
+
+- Minimum and maximum bullet counts in Key Concepts
+- Section spacing rules to visually separate content
+- Structured formatting constraints to reduce perceptual overload
+
+These constraints help balance information density while preventing cognitive overload.
