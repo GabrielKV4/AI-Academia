@@ -1,5 +1,5 @@
-from xml.dom.minidom import Document
-
+from docx import Document
+from pypdf import PdfReader
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -9,6 +9,7 @@ import streamlit.components.v1 as components
 import random
 import traceback
 from src.input_validator import validate_input_text
+from datetime import datetime
 
 # -----------------------------
 # Page Configuration
@@ -356,9 +357,6 @@ with col2:
 # File Upload Handling
 # -----------------------------
 
-class PdfReader:
-    pass
-
 
 with col3:
     uploaded_file = st.file_uploader(
@@ -433,6 +431,16 @@ def get_fix_suggestion(rule):
     return suggestions.get(rule, "Review formatting for this rule.")
 
 # -----------------------------
+# History Helper Function
+# -----------------------------
+
+def input_preview(text, max_chars=70):
+    cleaned = " ".join(text.split())
+    if len(cleaned) <= max_chars:
+        return cleaned
+    return cleaned[:max_chars].rstrip() + "..."
+
+# -----------------------------
 # History Button Handler
 # -----------------------------
 
@@ -441,13 +449,22 @@ if view_history_clicker:
         st.markdown("### History of Inputs and Results")
         
         for item in reversed(st.session_state.history):
-            with st.expander(f"Entry #{item['id']} - Compliance Score: {item['score']}%"):
-                st.write("**Input:**")
+            expander_title = (
+                f"Entry #{item['id']} - {item['timestamp']} - "
+                f"\"{item['input_preview']}\" - Compliance Score: {item['score']}%"
+            )
+            
+            with st.expander(expander_title, expanded=False):
+                st.write("**Timestamp:**", item["timestamp"])
+                st.write("**Full Input:**")
                 st.write(item["input"])
+                
                 st.write("**Baseline Summary:**")
-                st.write(item["baseline"])
+                st.info(item["baseline"])
+                
                 st.write("**ADHD-Friendly Summary:**")
-                st.write(item["adhd"])
+                st.info(item["adhd"])
+                
                 st.write("**Compliance Breakdown:**")
                 for rule, data in item["compliance"].items():
                     if isinstance(data, dict):
@@ -459,8 +476,47 @@ if view_history_clicker:
                             suggestion = get_fix_suggestion(rule)
                             st.error(f"{pretty} — FAIL")
                             st.caption(f"Suggested Fix: {suggestion}")
+                
+        # -----------------------------
+        # History Compliance Line Chart
+        # -----------------------------
+        
+        st.markdown("### Compliance Trend Across Past Runs")
+        
+        history_chart_df = pd.DataFrame([
+            {
+                "Run": item["id"],
+                "Compliance Score": item["score"],
+                "Timestamp": item["timestamp"]
+            }
+            for item in st.session_state.history
+        ])
+        
+        line = alt.Chart(history_chart_df).mark_line(point=True).encode(
+            x=alt.X("Run:O", title="Run Number",axis=alt.Axis(labelAngle=0)),
+            y=alt.Y("Compliance Score:Q", title="Compliance Score (%)", scale=alt.Scale(domain=[0, 100])),
+            tooltip=["Run", "Compliance Score", "Timestamp"]
+        )
+        
+        labels = alt.Chart(history_chart_df).mark_text(
+            dy=-10,
+            fontSize=13,
+            color="#1f77b4",
+            fontWeight="bold"
+        ).encode(
+            x="Run:O",
+            y="Compliance Score:Q",
+            text=alt.Text("Compliance Score:Q", format=".1f")
+        )
+        history_chart = (line + labels).properties(
+            height=350
+        )
+        
+        st.altair_chart(history_chart, use_container_width=True)
     else :
         st.info("No history yet. Generate some summaries to see the history here.")
+    
+    
 
 # -----------------------------
 # Generate Button Handler
@@ -580,7 +636,7 @@ if generate_clicked:
                 st.markdown("---")
 
                 # Baseline summary expandble field
-                with st.expander("📘 Baseline Summary"):
+                with st.expander("📘 Baseline Summary", expanded=True):
                     st.info(baseline)
 
             # -----------------------------
@@ -715,7 +771,9 @@ if generate_clicked:
             
             history_entry = {
                 "id": len(st.session_state.history) + 1,
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S %p"),
                 "input": user_input,
+                "input_preview": input_preview(user_input),
                 "baseline": baseline,
                 "adhd": adhd,
                 "results": results,
