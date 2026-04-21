@@ -1,0 +1,5 @@
+# Failure Analysis
+All 10 quantitative cases were rerun using the same manual text-entry method used in Sprint 2 in order to preserve consistency across measurements. Based on these reruns, no quantitative failure cases required analysis if all ADHD summaries reach at least 80% compliance within the allowed attempts. This is noted explicity because the Sprint 3 requirement only calls for failure analysis when a case remains below 80% compliance after 3 attempts.
+
+## Additional Functional Issues
+After completing the Sprint 3 Quantitative Evaluation, I tested the new upload feature. The application allows uploads for PDF, DOCX, and TXT files. Of the three, only TXT uploaded successfully and generated summaries as expected. PDF and DOCX uploads did not work properly. The PDF upload produced the error PdfReader() takes no arguments, and the DOCX upload also failed to load content correctly. Because of these issues, all 10 quantitative evaluation cases were completed using manual text entry to maintain consistency and ensure valid results.
