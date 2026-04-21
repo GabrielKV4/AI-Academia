@@ -2,7 +2,6 @@
 
 The Sprint 3 Quantitative Evaluation will document the measureable performance of the ClearPath AI system across 10 evaluation cases. For each case, it will present fresh rerun results comparing the baseline summary and the ADHD-focused summary using exact metrics, including compliance score, reading level, average sentence length, and average paragraph length. It will also note any ADHD rule failures and include a failure-case analysis for any summary that remains below 80% compliance after three attempts. Overall, this file is meant to provide clear, data-driven evidence that the system's ADHD-focused output is more structurally compliant and easier to read than the baseline output, while also showing where improvements may still be needed.
 
----
 
 ## Input 1: Microbiology Textbook
 
@@ -13,16 +12,16 @@ https://assets.openstax.org/oscms-prodcms/media/documents/Microbiology-WEB.pdf
 Visible light consists of electromagnetic waves that behave like other waves. Hence, many of the properties of light that are relevant to microscopy can be understood in terms of light’s behavior as a wave. An important property of light waves is the wavelength, or the distance between one peak of a wave and the next peak. The height of each peak (or depth of each trough) is called the amplitude. In contrast, the frequency of the wave is the rate of vibration of the wave, or the number of wavelengths within a specified time period.
 
 
-### Baseline Summary: Attempt 1
+### Baseline Summary Attempt 1
 Visible light is composed of electromagnetic waves that exhibit wave-like properties, which are crucial for understanding microscopy. Key characteristics of light waves include:
 - **Wavelengths:** The distance between consecutive peaks of a wave.
 - **Amplitude:** The height of the peaks or depth of the troughs.
 - **Frequency:** The rate of vibration, indicating how many wavelngths occur in a given time period.
 
-### Baseline Summary: Attempt 2
+### Baseline Summary Attempt 2
 Visible light is composed of electromagnetic waves that exhibit wave-like properties, which are crucial for understanding microscopy. Key characteristics of light waves include wavelength (the distance between consecutive peaks), amplitude (the height of peaks or depth of troughs), and frequency (the rate of vibration or number of wavelengths in a given time period).
 
-### Baseline Summary: Attempt 3
+### Baseline Summary Attempt 3
 Visible light is composed of electromagnetic waves that exhibit wave-like properties, which are crucial for understanding microscopy. Key characteristics of light waves include wavelength (the distance between consecutive peaks), amplitude (the height of peaks or depth of troughs), and frequency (the rate of vibration or the number of wavelengths in a given time period).
 
 ### ADHD Summary Attempt 1
