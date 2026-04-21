@@ -198,6 +198,8 @@ export OPENAI_API_KEY="your_api_key_here"
 streamlit run app.py
 ```
 
+---
+
 ## Application Workflow
 
 1. Paste study material into the text box **or upload a file** (`.pdf`, `.txt`, `.docx`)
@@ -210,6 +212,77 @@ streamlit run app.py
 4. Optional
    - Download results as a `.txt` or `.md` file
    - View history of past generations made within the current session
+
+---
+
+## Features 
+
+### Dual Summarization
+- Generates two versions of the input:
+   - **Baseline Summary** - standard AI-generated output
+   - **ADHD-Friendly SUmmary** - structured and simplified for improved readability
+
+### Compliance Engine
+- Evaluates ADHD-friendly summaries using a rule-based validation system
+- Enforces the following constraints:
+   - Sentence length &le; 20 words
+   - paragraph length &le; 80 words
+   - Required sections:
+      - Learning Objectives
+      - Key Concepts
+      - Recall Questions
+   - Bullet formatting in the Key Concepts section
+   - At least 2 recall questions
+   - Reading level &le; Grade 8 (Flesch-Kincaid)
+   - Proper spacing between sections
+   - Formula separation
+   - Between 3 and 6 bullet points in Key Concepts
+- Produces:
+   - Pass/fail results for each rule
+   - Overall **compliance score (%)**
+   - Final **ADHD compliance status**
+
+### Regeneration
+- Attempts to generate an ADHD-friendly summary up to **3 times**
+- Each attempt is evaluated using the comliance engine
+- Handles API failures by retrying automatically 
+
+### Input Validation
+- Validates user input before summarization
+- Enforces minimum input length
+- Detects likely gibberish text
+
+### File Upload Support
+- Accepts multiple input formats:
+   - `.txt`
+   - `.pdf`
+   - `.docx`
+- Extracts and processes text automatically
+
+### History Tracking
+- Stores previous runs within the session
+- Displays:
+   - Timestamp
+   - Input preview
+   - Compliance score
+   - Full summaries
+   - Rule breakdown
+
+### Compliance Trend Chart
+- Visualizes compliance scores across past runs
+- Displays improvement trends over time using a line chart
+
+### Export Functionality
+- Allows downloading results as:
+  - `.txt` file
+  - `.md` file
+- Includes:
+   - Original input
+   - Both summaries
+   - Compliance score and rule breakdown
+   - Readability metrics
+
+---
 
 ## Example Output Metrics
 
