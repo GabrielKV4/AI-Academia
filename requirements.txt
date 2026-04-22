@@ -4,3 +4,5 @@ textstat
 streamlit
 pandas
 altair
+python-docx
+pypdf
