@@ -247,3 +247,18 @@ It is not simply prompt engineering.
 It is a structured generation + validation system.
 
 ---
+
+## Deviations from Original Plan
+
+Several enhancements were added beyond the original PRD to improve usability, robustness, and desmstration quality.
+
+### Additions
+
+- A full Streamlit-based user interface was implemented to provide an interactive experienc, including tabs for summaries, compliance results, and charts.
+- File upload support was added for `.txt`, `.pdf`, and `.docx` formats, allowing users to input real-world study materials.
+- An input validation system was introduced to detect invalid, non-english, or gibberish text before processing.
+- A history tracking feature was implemented, storing past runs with timestamps, input previews, and results.
+- A compliance trend chart was added to visualize score progression across runs.
+- Export functionality was added, allowing users to download results as `.txt` or `.md` files.
+
+---
